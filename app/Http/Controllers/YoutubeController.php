@@ -53,6 +53,10 @@ class YoutubeController extends Controller
         $page = $request->query('page');
         $countries = array_keys(self::COUNTRY_CODES);
         if ($pageSize && $page) {
+            $this->validate($request, [
+                'countriesPerPage' => 'bail|required|integer|min:1',
+                'page' => 'bail|required|integer|min:1',
+            ]);
             $countries = array_slice($countries, $pageSize * ($page - 1), $pageSize);
         }
         $topVideosList = $this->getYoutubeVideos($countries);
